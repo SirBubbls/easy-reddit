@@ -47,7 +47,7 @@ public class Request {
                 
                 // Priting Error Message
                 // TODO: Exception Handling
-                NSLog("Request Error:\n\(error)")
+                NSLog("Request Error:\n\(error!)")
                 NSLog("URL: \(self.request.url!)")
                 
             }
@@ -66,17 +66,6 @@ public class Request {
         // Returning result JSON
         return json
     }
-}
-
-
-
-
-public class GetRequest: Request {
-    
-    //    init(url: URL){
-    //        super.init(url: url)
-    //    }
-    
 }
 
 
