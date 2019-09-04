@@ -66,7 +66,7 @@ public class AuthenticationManager {
     
     
     func requestNewToken() {
-        let authUrl = "https://www.reddit.com/api/v1/authorize?client_id=\(self.clientId)&response_type=code&state=\(self.state)&redirect_uri=\(self.redirect_uri)&duration=permanent&scope=identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread"
+        let authUrl = "https://www.reddit.com/api/v1/authorize?client_id=\(self.clientId!)&response_type=code&state=\(self.state)&redirect_uri=\(self.redirect_uri)&duration=permanent&scope=identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread"
         
         NSWorkspace.shared.open(URL(string: authUrl)!)
     }
