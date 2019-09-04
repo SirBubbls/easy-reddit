@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A02A9B1C231FD37000EABF9A /* ApiCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02A9B1B231FD37000EABF9A /* ApiCall.swift */; };
 		A0D475BC231FCE9F00812550 /* EasyReddit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0D475B2231FCE9F00812550 /* EasyReddit.framework */; };
 		A0D475C1231FCE9F00812550 /* EasyRedditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D475C0231FCE9F00812550 /* EasyRedditTests.swift */; };
 		A0D475C3231FCE9F00812550 /* EasyReddit.h in Headers */ = {isa = PBXBuildFile; fileRef = A0D475B5231FCE9F00812550 /* EasyReddit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,6 +25,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A02A9B1B231FD37000EABF9A /* ApiCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCall.swift; sourceTree = "<group>"; };
 		A0D475B2231FCE9F00812550 /* EasyReddit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EasyReddit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0D475B5231FCE9F00812550 /* EasyReddit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EasyReddit.h; sourceTree = "<group>"; };
 		A0D475B6231FCE9F00812550 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -52,6 +54,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A02A9B19231FD2A900EABF9A /* API */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		A02A9B1A231FD34B00EABF9A /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				A02A9B1B231FD37000EABF9A /* ApiCall.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 		A0D475A8231FCE9F00812550 = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +90,8 @@
 		A0D475B4231FCE9F00812550 /* EasyReddit */ = {
 			isa = PBXGroup;
 			children = (
+				A02A9B1A231FD34B00EABF9A /* Networking */,
+				A02A9B19231FD2A900EABF9A /* API */,
 				A0D475B5231FCE9F00812550 /* EasyReddit.h */,
 				A0D475B6231FCE9F00812550 /* Info.plist */,
 				A0D475CC231FCEAB00812550 /* EasyReddit.swift */,
@@ -198,6 +217,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A02A9B1C231FD37000EABF9A /* ApiCall.swift in Sources */,
 				A0D475CD231FCEAB00812550 /* EasyReddit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
