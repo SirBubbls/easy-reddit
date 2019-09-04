@@ -10,21 +10,18 @@ import Foundation
 import Cocoa
 
 public class AuthenticationManager {
-    let clientId: String
+    var clientId: String? = nil
     var token: OAuthToken?
     var state = "irasntuwfynta" // Needs to be randomly generated
     let redirect_uri = "redditapp://response"
-    let loginWindow: NSViewController
+//    let loginWindow: NSViewController
     
     
-    static let shared = AuthenticationManager(clientId: "i6wWXtGXhwuZoA")
+    static let shared = AuthenticationManager()
     
-    init(clientId: String) {
-        self.clientId = clientId
-        
-        
-        let storyboard: NSStoryboard = NSStoryboard(name: "Main", bundle: nil)
-        self.loginWindow = storyboard.instantiateController(withIdentifier: "login") as! NSViewController
+    init() {
+//        let storyboard: NSStoryboard = NSStoryboard(name: "Main", bundle: nil)
+//        self.loginWindow = storyboard.instantiateController(withIdentifier: "login") as! NSViewController
         
         // Try to Load Token
         do{
@@ -41,10 +38,13 @@ public class AuthenticationManager {
     }
     
     
+    
+    
+    // TODO
     func checkToken() -> Bool {
         
         
-        return true
+        return false
     }
     
     
@@ -78,8 +78,8 @@ public class AuthenticationManager {
     
     func refresh() {
         let postData = "grant_type=refresh_token&refresh_token=\(token!.refreshToken)"
-        let credentials = String(format: "%@:", self.clientId)
-        print("ClientID", self.clientId)
+        let credentials = String(format: "%@:", self.clientId!)
+        
         let request = PostRequest(url: URL(string: "https://www.reddit.com/api/v1/access_token")!, credentials: credentials, postData: postData)
         let json = request.makeRequest()
         
@@ -94,8 +94,8 @@ public class AuthenticationManager {
     
     func getTokenByCode(code: String) {
         let postData = "grant_type=authorization_code&code=\(code)&redirect_uri=\(self.redirect_uri)"
-        let credentials = String(format: "%@:", self.clientId)
-        print("ClientID", self.clientId)
+        let credentials = String(format: "%@:", self.clientId!)
+        
         let request = PostRequest(url: URL(string: "https://www.reddit.com/api/v1/access_token")!, credentials: credentials, postData: postData)
         let json = request.makeRequest()
         self.token = OAuthToken(response: json)
