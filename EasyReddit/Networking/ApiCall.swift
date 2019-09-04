@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SwiftyJSON
+//import SwiftyJSON
 
 
 // Internface for POST & GET API Requests
@@ -80,7 +80,7 @@ public class ApiCall {
         }
         
         // Executing and returning
-        return RequestType(request: request).makeRequest()
+        return Request(request: request).makeRequest()
     }
     
     // TODO: Not working currently (i think)
@@ -107,7 +107,7 @@ public class ApiCall {
         request.httpMethod = "POST"
         
         
-        return RequestType(request: request).makeRequest()
+        return Request(request: request).makeRequest()
         
     }
 }
