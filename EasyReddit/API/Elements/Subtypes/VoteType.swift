@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum VoteType {
+public enum VoteType {
     case Upvote
     case Downvote
     case Neutral

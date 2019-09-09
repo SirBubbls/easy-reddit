@@ -1,13 +1,10 @@
 //
-//  FullName.swift
-//  EasyReddit
+//  Fullname.swift
+//  reddit
 //
-//  Created by Lucas Sas on 04.09.19.
+//  Created by Lucas Sas on 12.08.19.
 //  Copyright © 2019 Lucas Sas. All rights reserved.
 //
-
-import Foundation
-
 
 import Foundation
 
@@ -16,13 +13,18 @@ public class Fullname {
     let type: String
     
     
-    init(type: String, uniqueID: String) {
+    public init(type: String, uniqueID: String) {
         self.uniqueID = uniqueID
         self.type = type
     }
     
-    func asString() -> String{
-        // uniqueid muss vllt noch in base12 umgewandelt werden
+    public init(fromString: String) {
+        let parts = fromString.split(separator: "_")
+        self.type = String(parts.first ?? "")
+        self.uniqueID = String(parts.last ?? "")
+    }
+    
+    public func asString() -> String {
         return "\(type)_\(uniqueID)"
     }
 }
