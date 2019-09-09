@@ -10,6 +10,13 @@ import Foundation
 //import SwiftyJSON
 
 
+
+private enum APIError: Error {
+    case CallError
+}
+
+
+
 // Internface POST GET API Requests
 public class ApiCall {
     let url: URL //
@@ -39,19 +46,19 @@ public class ApiCall {
     public func execute() throws -> JSON {
         switch self.requestType {
         case "POST":
-            return self.postRequest()
+            return self.postRequest()!
         case "GET":
-            return self.getRequest()
+            return self.getRequest()!
         default:
             print("Not a Valid Request")
         }
         
-        return JSON()
+        throw APIError.CallError
     }
     
     // Execute GET Request
     // gets called by public function .execute()
-    private func getRequest() -> JSON {
+    private func getRequest() -> JSON? {
         
         // Process URL Parameters
         var urlParameters = "?"
@@ -68,10 +75,13 @@ public class ApiCall {
         request.httpMethod = "GET"
         
         // Getting accessToken from Authentication Manager
-        let token = AuthenticationManager.shared.token!.accessToken
+        if requiresAuth {
+            let token = AuthenticationManager.shared.token!.accessToken
+            print("\(token)")
+            request.setValue("bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         
         // Request Header Information
-        request.setValue("bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("test_app by -IAmNotWhoIAm", forHTTPHeaderField: "User-Agent")
         
         // Adding Header Parameters
@@ -84,7 +94,7 @@ public class ApiCall {
     }
     
     // TODO: Not working currently (i think)
-    private func postRequest() -> JSON{
+    private func postRequest() -> JSON? {
         var urlParameters = "?"
         
         for key in (self.parameters ?? [String: String]()).keys {
