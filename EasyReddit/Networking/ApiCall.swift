@@ -1,8 +1,8 @@
 //
 //  ApiCall.swift
-//  EasyReddit
+//  reddit
 //
-//  Created by Lucas Sas on 04.09.19.
+//  Created by Lucas Sas on 08.08.19.
 //  Copyright © 2019 Lucas Sas. All rights reserved.
 //
 
@@ -10,17 +10,17 @@ import Foundation
 //import SwiftyJSON
 
 
-// Internface for POST & GET API Requests
+// Internface POST GET API Requests
 public class ApiCall {
-    let url: URL
+    let url: URL //
     let requestType: String
     var headerParameters: [String: String]?
     var parameters: [String: String]?
     var bodyParameters: [String: String]?
-    var requiresAuth: Bool = false
+    public var requiresAuth: Bool = false
     
     
-    init(method: String, requestType: String) {
+    public init(method: String, requestType: String) {
         self.url = URL(string: "https://oauth.reddit.com" + method)!
         self.requestType = requestType
         self.headerParameters = nil
@@ -36,7 +36,7 @@ public class ApiCall {
         self.parameters = parameters
     }
     
-    func execute() throws -> JSON {
+    public func execute() throws -> JSON {
         switch self.requestType {
         case "POST":
             return self.postRequest()
@@ -108,6 +108,5 @@ public class ApiCall {
         
         
         return Request(request: request).makeRequest()
-        
     }
 }
