@@ -25,6 +25,7 @@ public class RedditComment: DataType {
     public let html: String?
     public var depth: Int? = nil
     public var expanded: Bool = false
+    public var more: More?
     
     public init(json: JSON) {
         self.fullname = Fullname(type: RedditComment.kind, uniqueID: json["id"].string!)
@@ -41,16 +42,29 @@ public class RedditComment: DataType {
         
         if let replies: [JSON] = json["replies"]["data"]["children"].array {
             self.replies = RedditComment.processReplies(data: replies)
+            self.more = RedditComment.fetchMore(data: replies)
         } else {
             replies = nil
         }
         
+        
+        
+        super.init(kind: "t1")
     }
     
     static func processReplies(data: [JSON]) -> [RedditComment]? {
         return Parser.parse(data: data) as! [RedditComment]?
     }
     
+    
+    static func fetchMore(data: [JSON]) -> More? {
+        
+        if data.last!["kind"].stringValue == More.kind {
+            return More(data: data.last!)
+        }
+        
+        return nil
+    }
     
 }
 
