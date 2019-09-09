@@ -7,41 +7,42 @@
 //
 
 import Foundation
-import Cocoa
+
 
 public class AuthenticationManager {
-    var clientId: String? = nil
+    
+    /**
+     Variables
+    */
+    
+    public var clientId: String? = nil
     var token: OAuthToken?
-    var state = "irasntuwfynta" // Needs to be randomly generated
+    
+    // TODO: Needs to be randomly generated
+    var state = "irasntuwfynta"
     let redirect_uri = "redditapp://response"
-//    let loginWindow: NSViewController
     
     
-    static let shared = AuthenticationManager()
+    public static let shared = AuthenticationManager()
     
-    init() {
-//        let storyboard: NSStoryboard = NSStoryboard(name: "Main", bundle: nil)
-//        self.loginWindow = storyboard.instantiateController(withIdentifier: "login") as! NSViewController
-        
+    public init() {
+
         // Try to Load Token
         do{
             self.token = try self.loadToken()
             
-            print("Token Loaded")
+            NSLog("Token Loaded")
         }catch{
-            print("Token Could not be Loaded")
+            
+            NSLog("Token Could not be Loaded")
         }
-        
-        refresh()
-        
-        
     }
     
     
     
     
     // TODO
-    func checkToken() -> Bool {
+    public func checkToken() -> Bool {
         
         
         return false
@@ -49,14 +50,19 @@ public class AuthenticationManager {
     
     
     
-    func loadToken() throws -> OAuthToken? {
-        print("Trying To Load Token")
+    /**
+     Tries to load Token stored in UserDefaults.
+     Throws exception if no entry could be found.
+    */
+    
+    private func loadToken() throws -> OAuthToken? {
+        
         let defaults:UserDefaults = UserDefaults.standard
         
         let accessToken = defaults.string(forKey: "accessToken")
         let refreshToken = defaults.string(forKey: "refreshToken")
         
-        if accessToken == nil && refreshToken == nil{
+        if refreshToken == nil{
             return nil
         }
         
@@ -65,18 +71,22 @@ public class AuthenticationManager {
     }
     
     
-    func requestNewToken() {
+    /**
+     Opens a URL with a grant access dialogue.
+    */
+    
+    public func requestNewToken() {
         let authUrl = "https://www.reddit.com/api/v1/authorize?client_id=\(self.clientId!)&response_type=code&state=\(self.state)&redirect_uri=\(self.redirect_uri)&duration=permanent&scope=identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread"
         
         NSWorkspace.shared.open(URL(string: authUrl)!)
     }
     
-    func viableToken() -> Bool {
-        
-        return false
-    }
     
-    func refresh() {
+    /**
+     Requests a new access token by providing the revresh token found in OAuthToken.
+    */
+    
+    public func refresh() {
         let postData = "grant_type=refresh_token&refresh_token=\(token!.refreshToken)"
         let credentials = String(format: "%@:", self.clientId!)
         
@@ -92,7 +102,13 @@ public class AuthenticationManager {
         
     }
     
-    func getTokenByCode(code: String) {
+    
+    /**
+     After a code has been intercepted by interceptCode(url: URL).
+     - parameter code: return code that got intercepted
+    */
+    
+    private func getTokenByCode(code: String) {
         let postData = "grant_type=authorization_code&code=\(code)&redirect_uri=\(self.redirect_uri)"
         let credentials = String(format: "%@:", self.clientId!)
         
@@ -103,17 +119,25 @@ public class AuthenticationManager {
     }
     
     
-    func interceptCode(url: URL) {
-        print(url)
+    
+    /**
+     Use this function to process a
+     - parameter url: return url
+    */
+    
+    public func interceptCode(url: URL) {
+        
         let information = String(url.query!)
         
         let arguments = information.split(separator: "&")
-        //
+        
+        // Extracting code from url
         let code = String(arguments[1].split(separator: "=")[1])
+        
+        // Extracting state variable from url
         self.state = String(arguments[0].split(separator: "=")[1])
         
-        print("Code Intercepted: \(code)")
-        
+        // Generating Token and returning
         self.getTokenByCode(code: String(code))
     }
 }
