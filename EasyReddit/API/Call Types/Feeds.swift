@@ -33,12 +33,7 @@ public class Feeds {
         // Request
         do{
             let response: JSON = try call.execute()
-            
-            if response["error"] == 400 {
-                print("Error 400")
-                return nil
-            }
-            
+        
             let data = response["data"]["children"].arrayValue
             
             let result: [RedditLink] = Parser.parse(data: data) as! [RedditLink]
@@ -55,25 +50,23 @@ public class Feeds {
         let call = ApiCall(method: "/best", requestType: "GET")
         
         
-//        var params = ["count": "10"]
-        
         // Adding Parameter
-        if after != nil{
-//            params.merge(params, uniquingKeysWith: nil)
+        if let after = after {
+            call.addParameters(parameters: ["after": after])
         }
         
-        call.addParameters(parameters: ["limit": "5"])
+        call.requiresAuth = true
         
         // Request
         do{
             let response: JSON = try call.execute()
             let data = response["data"]["children"].arrayValue
             
-            let result: [RedditLink] = Parser.parse(data: data) as! [RedditLink]
+            let result: [RedditLink]? = Parser.parse(data: data) as! [RedditLink]?
             
             return result
         }catch{
-            print("Error")
+            NSLog("API Call Error (\(call.requestType))")
         }
         
         return nil
