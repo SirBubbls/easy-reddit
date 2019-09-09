@@ -73,6 +73,8 @@ public class Subreddits {
         if let after = after{
             call.addParameters(parameters: ["after": after.asString()])
         }
+        
+        call.requiresAuth = true
 
         do {
             let data: JSON = try call.execute()
