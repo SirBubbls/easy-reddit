@@ -30,8 +30,8 @@ public class AuthenticationManager {
         // Try to Load Token
         do{
             self.token = try self.loadToken()
-            
             NSLog("Token Loaded")
+            self.token?.getInfo()
         }catch{
             
             NSLog("Token Could not be Loaded")
@@ -43,9 +43,19 @@ public class AuthenticationManager {
     
     // TODO
     public func checkToken() -> Bool {
+        let call = ApiCall(method: "/api/v1/me", requestType: "GET")
         
+        call.requiresAuth = true
         
-        return false
+        do {
+            let _ = try call.execute()
+            return true
+        } catch {
+            
+            print("CheckToken: False")
+            return false
+        }
+        
     }
     
     
@@ -93,7 +103,9 @@ public class AuthenticationManager {
         let request = PostRequest(url: URL(string: "https://www.reddit.com/api/v1/access_token")!, credentials: credentials, postData: postData)
         let json = request.makeRequest()
         
-        let token: String = json["access_token"].stringValue
+        let token: String = json!["access_token"].stringValue
+        
+        NSLog("New token: \(token)")
         
         if token > "" {
             self.token?.accessToken = token
@@ -114,7 +126,7 @@ public class AuthenticationManager {
         
         let request = PostRequest(url: URL(string: "https://www.reddit.com/api/v1/access_token")!, credentials: credentials, postData: postData)
         let json = request.makeRequest()
-        self.token = OAuthToken(response: json)
+        self.token = OAuthToken(response: json!)
         self.token?.save()
     }
     
