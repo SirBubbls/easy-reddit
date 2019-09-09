@@ -7,7 +7,7 @@
 //
 
 import Foundation
-//import SwiftyJSON
+
 
 
 public class Request {
@@ -22,10 +22,10 @@ public class Request {
     }
     
     // TODO: should probably return Optional (JSON?) in case of no Internet Connection
-    public func makeRequest() -> JSON {
+    public func makeRequest() -> JSON? {
         
         // Empty Json return values will be written into this variable
-        var json = JSON()
+        var json: JSON?
         
         // Session thats gets used for recieving data
         let session = URLSession.shared
@@ -36,30 +36,36 @@ public class Request {
         
         let task = session.dataTask(with: self.request) { data, response, error in
             
-            if let data = data { // Data is present
-                do{
-                    
-                    // Writing parsed json data into result variable
-                    json = try JSON(data: data)
-                    
-                }catch{print("ERROR")}
-            }else { // No Data Recieved
+            // Check for errors
+            if let error = error {
+                NSLog("\(error)")
+                return
+            }
+            
+            // Process data
+            if let data = data {
                 
-                // Priting Error Message
-                // TODO: Exception Handling
+                do{
+                    json = try JSON(data: data)
+                }catch{
+                    NSLog("Could not process")
+                    return
+                }
+            } else {
                 NSLog("Request Error:\n\(error!)")
                 NSLog("URL: \(self.request.url!)")
-                
             }
+            
+            if let error = json!["message"].string {
+                NSLog("Error \(error) (\(json!["error"].int ?? 0)) for \(self.request.url!.absoluteString)")
+                return
+            }
+            
             sem.signal()
         }
         
-        // Unlock Semaphore
         task.resume()
-        
-        // Executing Task
-        
-        
+
         // Waiting for finished 'task'
         sem.wait()
         
