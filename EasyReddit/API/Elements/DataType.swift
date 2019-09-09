@@ -9,5 +9,10 @@
 import Foundation
 
 public class DataType {
+    public let kind: String
     
+    
+    init(kind: String) {
+        self.kind = kind
+    }
 }

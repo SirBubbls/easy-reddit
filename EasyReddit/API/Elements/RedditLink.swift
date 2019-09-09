@@ -105,6 +105,8 @@ public class RedditLink: DataType {
             videoUrl = nil
         }
         
+        
+        super.init(kind: "t3")
     }
     
     // Deprecated Function

@@ -31,6 +31,9 @@ public class Subreddit: DataType {
         subredditType = json["subreddit_type"].stringValue
         displayName = json["display_name"].stringValue
         
+        
+        
+        super.init(kind: "t5")
     }
     
     func getInfo() {
