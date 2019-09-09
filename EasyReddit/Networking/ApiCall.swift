@@ -43,6 +43,13 @@ public class ApiCall {
         self.parameters = parameters
     }
     
+    
+    
+    /**
+     Executes the given APICall and returns a JSON Object containing the response.
+     If an error occured a exception will be thrown.
+    */
+    
     public func execute() throws -> JSON {
         switch self.requestType {
         case "POST":
