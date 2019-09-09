@@ -45,4 +45,17 @@ public class Comments {
         return parsed
         
     }
+    
+    
+    
+    
+    static public func fetchMoreChildren() -> [RedditComment]? {
+        
+        let call: ApiCall = ApiCall(method: "/api/morechildren", requestType: "GET")
+        
+        call.requiresAuth = true
+        
+        
+        return nil
+    }
 }
