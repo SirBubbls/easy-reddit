@@ -10,20 +10,23 @@ import Foundation
 
 public class Parser {
     
-    static func parseRequest(response: JSON) -> [DataType] {
-        let data = response["data"]["children"].array ?? [JSON]()
-        
-        return Parser.parse(data: data)
+    static func parseRequest(response: JSON) -> [DataType]? {
+        if let data = response["data"]["children"].array {
+            return Parser.parse(data: data)
+        } else {
+            return nil
+        }
     }
     
-    static func parse(data: [JSON]) -> [DataType] {
+    static func parse(data: [JSON]) -> [DataType]? {
         var result = [DataType]()
         
         for point in data {
             
             switch point["kind"].stringValue {
             case RedditComment.kind:
-                break
+                let parsedData: RedditComment = RedditComment(json: point["data"])
+                result.append(parsedData)
             case RedditAccount.kind:
                 break
             case RedditLink.kind:
@@ -41,6 +44,8 @@ public class Parser {
                 continue
             }
         }
+        
+        if result.isEmpty { return nil }
         
         return result
     }
